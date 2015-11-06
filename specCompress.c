@@ -120,26 +120,27 @@ int main(int argc, char **argv)
    for(i = 0; i < npts; i++) {
 	printf("Index: %d, Amp: %8.2f\n", i, cmag[1+i*nhar1]);
    }
-   current = getMaxError(cmag, curEnvelope, header.npts, nhar1);
-   curEnvelope[current.index] = current.amplitude;
-   printf("\n\noutside getMaxError()\n\nMax error at index: %d, Inputting amplitude: %8.2f \n", current.index, current.amplitude);
+   //current = getMaxError(cmag, curEnvelope, header.npts, nhar1);
+   //curEnvelope[current.index] = current.amplitude;
+   //printf("\n\noutside getMaxError()\n\nMax error at index: %d, Inputting amplitude: %8.2f \n", current.index, current.amplitude);
 
-   /*for (i = 0; i < npts; i++) {
-	printf("Index: %d, Amp: %8.2f \n", i, cmag[1+i*nhar1]);
-   } */
+  
+   for (i = 1; i < 21; i++) {		//for 20 harmonics
+	
+	bpList[0].amplitude = cmag[i];
+	bplist[1].amplitude = cmag[nhar1*(npts-1)+i];
 
-  /* for (i = 0; i < 20; i++) {		//for 20 harmonics
-	curEnvelope[i] = cmag[i+nhar1];	//set 1st value of each harmonic/kline
-	curEnvelope[header.npts-1] = 0;	//set last value to 0
-	interpolate(curEnvelope, 0, header.npts);	//draw line from 1st point to last
 	for(j = 0; j < brPts; j++) {	//find x # of brPts
-		//for (k = 0; k < header.npts; k=k*nhar1) {	//traverse through entire cmag to find next max
-			//current = getMaxError(cmag, curEnvelope, header.npts, nhar1);
-			//interpolate(curEnvelope,);
-			//after finding max error, add to kline into saolF
-		//}
+
+		current = getMaxError(cmag, curEnvelope, header.npts, nhar1);
+		bpList[j+2] = current;
+		//sort
+		//find 'current' in bpList by index - int find(struct breakPoint bpList, int current.index){}
+		//interpolate -1 index 
+		//interpolate +1 index
+		
 	}
-   }*/
+    }
 		
 
    /*cmag[k + i*nhar1]
@@ -195,9 +196,9 @@ struct breakPoint getMaxError(float data[], float env[], int length, int nhar1) 
 	if (max < temp2) {
 		max = temp2;
 		temp = i;
-		printf(" Current max: %8.2f \n", max);
+		//printf(" Current max: %8.2f \n", max);
 	} else {
-		printf("\n NO NEW MAX: %d", i);
+		//printf("\n NO NEW MAX: %d", i);
 	}
    }
 
