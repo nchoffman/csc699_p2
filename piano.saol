@@ -1,0 +1,42 @@
+global {
+   table cyc(harm, 128, 1);
+   srate 44100;
+}
+
+instr tone(fr) {
+   imports exports table cyc;
+
+   ksig harm1, harm2, harm3, harm4, 
+	harm5, harm6, harm7, harm8, harm9, 
+	harm10, harm11, harm12, harm13, harm14, 
+	harm15, harm16, harm17, harm18, harm19, harm20;
+
+   asig harm_freq1, harm_freq2, harm_freq3, harm_freq4, 
+	harm_freq5, harm_freq6, harm_freq7, harm_freq8, harm_freq9, 
+	harm_freq10, harm_freq11, harm_freq12, harm_freq13, harm_freq14, 
+	harm_freq15, harm_freq16, harm_freq17, harm_freq18, harm_freq19, harm_freq20, y;
+
+   //start klines
+   
+
+   harm1 = harm1/32767;
+   harm2 = harm2/32767;
+   harm3 = harm3/32767;
+   harm4 = harm4/32767;
+   harm5 = harm5/32767;
+   harm6 = harm6/32767;
+   harm7 = harm7/32767;
+   harm8 = harm8/32767;
+   harm9 = harm9/32767;
+   harm10 = harm10/32767;
+   harm11 = harm11/32767;
+   harm12 = harm12/32767;
+   harm13 = harm13/32767;
+   harm14 = harm14/32767;
+   harm15 = harm15/32767;
+   harm16 = harm16/32767;
+   harm17 = harm17/32767;
+   harm18 = harm18/32767;
+   harm19 = harm19/32767;
+   harm20 = harm20/32767;
+   
