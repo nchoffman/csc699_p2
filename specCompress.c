@@ -14,7 +14,11 @@
 #include "header.h"
 #include "breakpoint.h"
 #define P printf
+
+/** function declarations **/
 int anread(char*, int);					    /* 05/06 /96 */
+struct breakPoint getMaxError(float data[], float env[],	int length,	int nhar1);
+void interpolate(float env[], int start, int end);
 
 /*    global variables declared as externs in monan.h need a root position  */
 HEADER header;
@@ -29,15 +33,11 @@ float *cmag, *dfr, *phase, *br, *time, tl, dt, fa, smax, *newmag, *newfr,
    tl	- sound duration
    header.npts - total # of frames
 */
+//cmag[]      curEnvelope	length		nhar1
 
 double ampscale;
-
 struct breakPoint first, last, current;
 
-struct breakPoint getMaxError(float data[], float env[],	int length,	int nhar1);
-	      			//cmag[]      curEnvelope	length		nhar1
-
-void interpolate(float env[], int start, int end);
 
 int main(int argc, char **argv)
 {
@@ -130,7 +130,7 @@ int main(int argc, char **argv)
 
 	for(j = 0; j < brPts; j++) {	//find x # of brPts
 
-		current = getMaxError(cmag, curEnvelope, header.npts, nhar1);
+		current = getMaxError(&cmag[i], curEnvelope, npts, nhar1);
 		bpList[j+2] = current;
 		//sort
 		//find 'current' in bpList by index - int find(struct breakPoint bpList, int current.index){}

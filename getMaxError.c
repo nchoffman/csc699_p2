@@ -11,7 +11,7 @@ struct breakPoint getMaxError(float data[], float env[], int length, int nhar1) 
 
   printf("\nInside getMaxError()\n");
   for (i = 0; i < length; i++) {
-    temp2 = abs(env[i] - data[1 + i*nhar1]);
+    temp2 = abs(env[i] - data[i*nhar1]);
     if (max < temp2) {
       max = temp2;
       temp = i;
