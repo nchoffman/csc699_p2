@@ -1,0 +1,19 @@
+/** git commands (use these commands in this order) **/
+
+git pull     // get the most recent update from the remote server
+
+git status   // show recently changed files that aren't commited
+
+git add file1 file2 ... filen   // adds files 1 through n to be committed
+
+git commit -m "commit message"  // commit files with a commit message
+
+git push -u origin master       // push recent commit to remote server
+
+
+/** other useful commands **/
+
+git log --graph --decorate --all   // displays the full commit history
+
+
+/** questions/comments **/
