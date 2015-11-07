@@ -41,7 +41,13 @@ struct breakPoint first, last, current;
 
 int main(int argc, char **argv)
 {
+  /* NOTE FROM MICHAEL: I moved all the variable declarations here, just because
+                        it is a commont c language convention to do so */
   int i, k, j, curIndex;
+  int brPts = atoi(argv[2]);
+  float curEnvelope[npts];
+  FILE *saolF, *saslF;
+  struct breakPoint bpList[brPts+2];
   
 
   if (argc < 4) {
@@ -51,16 +57,6 @@ int main(int argc, char **argv)
 
 /* read in an analysis file */
   anread(argv[1],10);
-  
-
-  int brPts = atoi(argv[2]);
-
-  float curEnvelope[npts];
-  for (i = 0; i<npts; i++) {
-	curEnvelope[i] = 0;
-  }
-
-  struct breakPoint bpList[brPts+2];
 
 
    /************************************
@@ -68,7 +64,6 @@ int main(int argc, char **argv)
    *************************************/
 
 
-   FILE *saolF, *saslF;
    saolF = fopen(argv[3], "w");
    saslF = fopen(argv[4], "w");
 
@@ -128,10 +123,20 @@ int main(int argc, char **argv)
 	bpList[0].amplitude = cmag[i];
 	bpList[1].amplitude = cmag[nhar1*(npts-1)+i];
 
+   /* NOTE FROM MICHAEL: At this point you should do call the linear interpolation function
+                         to interpolate the envelope from the first point to the last point,
+                         but right now I still kept it so that the envelope is initialized to all zeros */
+   for (i = 0; i<npts; i++) {
+	curEnvelope[i] = 0;
+   }
 	for(j = 0; j < brPts; j++) {	//find x # of brPts
 
 		current = getMaxError(&cmag[i], curEnvelope, npts, nhar1);
 		bpList[j+2] = current;
+                /** NOTE FROM MICHAEL: you'll probably want to write a seperate sort function, find function, and
+                                       interpolate function in seperate files, just like the getMaxError.c file, 
+                                       make sure to update the Makefile to reflect those changes (just like how I 
+                                       updated the Makefile to include getMaxError.c) */
 		//sort
 		//find 'current' in bpList by index - int find(struct breakPoint bpList, int current.index){}
 		//interpolate -1 index 
@@ -180,6 +185,8 @@ int main(int argc, char **argv)
 
 }
 
+/* NOTE FROM MICHAEL: you will want to put this in a seperate file just like I
+                      did with the getMaxError function */
 void interpolate(float env[], int start, int end) {
 
 }

@@ -17,3 +17,7 @@ git log --graph --decorate --all   // displays the full commit history
 
 
 /** questions/comments **/
+
+MICHAEL'S COMMENTS: 
+I moved a couple things around in specCompress.c, all of my comments in
+specCompress.c start with /* NOTE FROM MICHAEL: ....  */ 
