@@ -7,6 +7,7 @@ struct breakPoint getMaxError(float data[], float env[], int length, int nhar1) 
 
   int i, index;
   float max = 0, temp;
+
   struct breakPoint current;
 
   printf("\nInside getMaxError()\n");
@@ -27,5 +28,4 @@ struct breakPoint getMaxError(float data[], float env[], int length, int nhar1) 
   printf("Max amp error: %8.2f, Index: %d \n ", max, temp);
 
   return current;
-
 }
