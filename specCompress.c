@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "header.h"
+#include "breakpoint.h"
 #define P printf
 int anread(char*, int);					    /* 05/06 /96 */
 
@@ -31,10 +32,7 @@ float *cmag, *dfr, *phase, *br, *time, tl, dt, fa, smax, *newmag, *newfr,
 
 double ampscale;
 
-struct breakPoint {
-	int index;
-	float amplitude;
-}first, last, current;
+struct breakPoint first, last, current;
 
 struct breakPoint getMaxError(float data[], float env[],	int length,	int nhar1);
 	      			//cmag[]      curEnvelope	length		nhar1
@@ -128,7 +126,7 @@ int main(int argc, char **argv)
    for (i = 1; i < 21; i++) {		//for 20 harmonics
 	
 	bpList[0].amplitude = cmag[i];
-	bplist[1].amplitude = cmag[nhar1*(npts-1)+i];
+	bpList[1].amplitude = cmag[nhar1*(npts-1)+i];
 
 	for(j = 0; j < brPts; j++) {	//find x # of brPts
 
@@ -181,38 +179,6 @@ int main(int argc, char **argv)
    fclose(saslF);
 
 }
-  
-
-
-//example call: getMaxError(cmag, curEnvelope, header.npts, nhar1);
-struct breakPoint getMaxError(float data[], float env[], int length, int nhar1) {
-
-   int i, temp, temp2;
-   float max = 0;
-
-   printf("\nInside getMaxError()\n");
-   for (i = 0; i < length; i++) {
-	temp2 = abs(env[i] - data[1 + i*nhar1]);
-	if (max < temp2) {
-		max = temp2;
-		temp = i;
-		//printf(" Current max: %8.2f \n", max);
-	} else {
-		//printf("\n NO NEW MAX: %d", i);
-	}
-   }
-
-   current.amplitude = max;
-   current.index = temp;
-
-   printf("Max amp error: %8.2f, Index: %d \n ", max, temp);
-
-   return current;
-
-}
-
-
-
 
 void interpolate(float env[], int start, int end) {
 
