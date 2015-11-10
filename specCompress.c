@@ -19,12 +19,15 @@
 int anread(char*, int);					    /* 05/06 /96 */
 struct breakPoint getMaxError(float data[], float env[],	int length,	int nhar1);
 void interpolate(float env[], int start, int end);
+void clean(float env[], int length, struct breakPoint bpList[], int length2);
 
 /*    global variables declared as externs in monan.h need a root position  */
 HEADER header;
 int nhar, nhar1, nchans, npts;
 float *cmag, *dfr, *phase, *br, *time, tl, dt, fa, smax, *newmag, *newfr,
   *finalfr;
+
+float curEnvelope[1551];
 
 /* 
    cmag[] - amp values per harmonic
@@ -33,7 +36,7 @@ float *cmag, *dfr, *phase, *br, *time, tl, dt, fa, smax, *newmag, *newfr,
    tl	- sound duration
    header.npts - total # of frames
 */
-//cmag[]      curEnvelope	length		nhar1
+
 
 double ampscale;
 struct breakPoint first, last, current;
@@ -45,7 +48,6 @@ int main(int argc, char **argv)
                         it is a commont c language convention to do so */
   int i, k, j, curIndex;
   int brPts = atoi(argv[2]);
-  float curEnvelope[npts];
   FILE *saolF, *saslF;
   struct breakPoint bpList[brPts+2];
   
@@ -110,29 +112,27 @@ int main(int argc, char **argv)
    //write klines
    
    fprintf(saolF, "//start klines\n   ");
-   for(i = 0; i < npts; i++) {
-	printf("Index: %d, Amp: %8.2f\n", i, cmag[1+i*nhar1]);
-   }
-   //current = getMaxError(cmag, curEnvelope, header.npts, nhar1);
-   //curEnvelope[current.index] = current.amplitude;
-   //printf("\n\noutside getMaxError()\n\nMax error at index: %d, Inputting amplitude: %8.2f \n", current.index, current.amplitude);
 
-  
-   for (i = 1; i < 21; i++) {		//for 20 harmonics
+
+   for (i = 0; i < 20; i++) {		//for 20 harmonics
+	//new function to clean bpList & curEnvelope clean();
+	clean(curEnvelope, npts, bpList, brPts);	
+
 	
+
 	bpList[0].amplitude = cmag[i];
 	bpList[1].amplitude = cmag[nhar1*(npts-1)+i];
 
    /* NOTE FROM MICHAEL: At this point you should do call the linear interpolation function
                          to interpolate the envelope from the first point to the last point,
                          but right now I still kept it so that the envelope is initialized to all zeros */
-   for (i = 0; i<npts; i++) {
-	curEnvelope[i] = 0;
-   }
+	
+	//interpolate curEnvelope
+   
 	for(j = 0; j < brPts; j++) {	//find x # of brPts
 
-		current = getMaxError(&cmag[i], curEnvelope, npts, nhar1);
-		bpList[j+2] = current;
+		//current = getMaxError(&cmag[i], curEnvelope, npts, nhar1);
+		//bpList[j+2] = current;
                 /** NOTE FROM MICHAEL: you'll probably want to write a seperate sort function, find function, and
                                        interpolate function in seperate files, just like the getMaxError.c file, 
                                        make sure to update the Makefile to reflect those changes (just like how I 
@@ -144,21 +144,6 @@ int main(int argc, char **argv)
 		
 	}
     }
-		
-
-   /*cmag[k + i*nhar1]
-    k = which harmonic #
-    i = which amp value
-   */
-   //find specified number of breakpoints by findMaxError()
-   /* for (i = 0; i < 5; i++) {	//for loop to write amp values in saolF
-	   for (k = 0; k < 10;k++) {
-		fprintf(saolF, "%8.2f, ", cmag[i + k*nhar1]);
-	   }
-	fprintf(saolF, "\n");
-   } */
-
-
 
 
    //scale klines by short value (32767)
