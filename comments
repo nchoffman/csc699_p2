@@ -21,3 +21,8 @@ git log --graph --decorate --all   // displays the full commit history
 MICHAEL'S COMMENTS: 
 I moved a couple things around in specCompress.c, all of my comments in
 specCompress.c start with /* NOTE FROM MICHAEL: ....  */ 
+
+(11-11)
+I don't think it is necessary to have a "clean" function to clear the
+array's because you're going to overwrite the data with each new
+harmonic anyways.
