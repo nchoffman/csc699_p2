@@ -18,8 +18,11 @@
 /** function declarations **/
 int anread(char*, int);					    /* 05/06 /96 */
 struct breakPoint getMaxError(float data[], float env[],	int length,	int nhar1);
-void interpolate(float env[], int start, int end);
+void interpolate(float env[], struct breakPoint bpList[], int length);
 void clean(float env[], int length, struct breakPoint bpList[], int length2);
+void printBP(struct breakPoint bpList[], int length);
+void printEnv(float env[], int length);
+void sortBP(struct breakPoint bpList[], int length);
 
 /*    global variables declared as externs in monan.h need a root position  */
 HEADER header;
@@ -44,8 +47,7 @@ struct breakPoint first, last, current;
 
 int main(int argc, char **argv)
 {
-  /* NOTE FROM MICHAEL: I moved all the variable declarations here, just because
-                        it is a commont c language convention to do so */
+
   int i, k, j, curIndex;
   int brPts = atoi(argv[2]);
   FILE *saolF, *saslF;
@@ -114,34 +116,42 @@ int main(int argc, char **argv)
    fprintf(saolF, "//start klines\n   ");
 
 
-   for (i = 0; i < 20; i++) {		//for 20 harmonics
-	//new function to clean bpList & curEnvelope clean();
-	clean(curEnvelope, npts, bpList, brPts);	
+   for (i = 0; i < 1; i++) {		//for 20 harmonics
+	//Reset arrays for next harmonic
+	clean(curEnvelope, npts, bpList, brPts);
 
-	
-
+	//Gather first and last points
 	bpList[0].amplitude = cmag[i];
+	bpList[0].index = 0;
 	bpList[1].amplitude = cmag[nhar1*(npts-1)+i];
+	bpList[1].index = npts-1;
 
-   /* NOTE FROM MICHAEL: At this point you should do call the linear interpolation function
-                         to interpolate the envelope from the first point to the last point,
-                         but right now I still kept it so that the envelope is initialized to all zeros */
-	
+	curEnvelope[0] = cmag[i];
+	curEnvelope[npts-1] = 0.0;
+
+	sortBP(bpList, brPts);	
+	printBP(bpList, brPts);
+
 	//interpolate curEnvelope
-   
+	printf("\nTesting new interpolate...\n");
+	interpolate(curEnvelope, bpList, brPts);
+
 	for(j = 0; j < brPts; j++) {	//find x # of brPts
 
-		//current = getMaxError(&cmag[i], curEnvelope, npts, nhar1);
-		//bpList[j+2] = current;
-                /** NOTE FROM MICHAEL: you'll probably want to write a seperate sort function, find function, and
-                                       interpolate function in seperate files, just like the getMaxError.c file, 
-                                       make sure to update the Makefile to reflect those changes (just like how I 
-                                       updated the Makefile to include getMaxError.c) */
-		//sort
-		//find 'current' in bpList by index - int find(struct breakPoint bpList, int current.index){}
-		//interpolate -1 index 
-		//interpolate +1 index
+		//Gather current maxError into struct
+		current = getMaxError(&cmag[i], curEnvelope, npts, nhar1);
+	
+		//add to bpList[]
+		bpList[0].index = current.index;
+		bpList[0].amplitude = current.amplitude;
+
+		//sort bpList[] by index
+		sortBP(bpList, brPts);
 		
+		printBP(bpList, brPts);
+
+		printf("\n Testing new interpolate...\n");
+		interpolate(curEnvelope, bpList, brPts);
 	}
     }
 
@@ -167,11 +177,5 @@ int main(int argc, char **argv)
 
    fclose(saolF);
    fclose(saslF);
-
-}
-
-/* NOTE FROM MICHAEL: you will want to put this in a seperate file just like I
-                      did with the getMaxError function */
-void interpolate(float env[], int start, int end) {
 
 }
