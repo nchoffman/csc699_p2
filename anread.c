@@ -39,6 +39,9 @@ Changes:
 ******************************************************************************/
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h> //read
+#include <sys/stat.h> //open
+#include <fcntl.h> //open
 #include "monan.h"
 #define USH_MAX 65535.					    /* jwb 02/24/94 */
 #define SH_MAX 32768.					    /* jwb 02/24/94 */
@@ -51,6 +54,7 @@ int anread(char *filnam, int nhreq)			    /* jwb 05/06/96 */
   unsigned short int *tempbufs;			            /* jwb 01/06/94 */
   float *tempbuf, cm, df, dfscale;			    /* jwb 01/06/94 */
   double sum1, sum2, sum3, sum4, sum5;
+  double ampscale;
 
   if((unit = open(filnam,0)) == -1)  return(1);  /* file not available */
 
