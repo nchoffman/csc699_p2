@@ -1,10 +1,15 @@
-all: cpan specCompress
+#makefile for project 2
+EXE = cpan specCompress
+CC = gcc
+LFLAGS = -lm
 
-cpan: cpan.c header.c anread.c cpan
-	gcc -O cpan.c header.c anread.c -o cpan -lm
+all: $(EXE)
 
-specCompress: specCompress.c header.c anread.c getMaxError.c specCompress
-	gcc -O -g specCompress.c header.c anread.c getMaxError.c -o specCompress -lm
+cpan: cpan.c header.c anread.c
+	$(CC) -O $? -o $@ $(LFLAGS)
+
+specCompress: specCompress.c header.c anread.c getMaxError.c clean.c sortBP.c printBP.c interpolate.c
+	$(CC) -O -g $? -o $@ $(LFLAGS)
 
 clean:
-	rm cpan specCompress
+	rm -f $(EXE)
