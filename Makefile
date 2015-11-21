@@ -8,7 +8,7 @@ all: $(EXE)
 cpan: cpan.c header.c anread.c
 	$(CC) -O $? -o $@ $(LFLAGS)
 
-specCompress: specCompress.c header.c anread.c getMaxError.c clean.c sortBP.c printBP.c interpolate.c
+specCompress: specCompress.c header.c anread.c getMaxError.c clean.c sortBP.c findBP.c printBP.c interpolate.c
 	$(CC) -O -g $? -o $@ $(LFLAGS)
 
 clean:
