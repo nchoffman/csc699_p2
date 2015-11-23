@@ -18,7 +18,7 @@ struct breakPoint getMaxError(float data[], float env[], int length, int nhar1) 
     }
   }
 
-  current.amplitude = max;
+  current.amplitude = data[index*nhar1];
   current.index = index;
 
   return current;

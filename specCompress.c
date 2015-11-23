@@ -141,6 +141,9 @@ int main(int argc, char **argv)
       bpList[j].index = current.index;
       bpList[j].amplitude = current.amplitude;
 
+      //update curEnvelope with the current maxError breakpoint
+      curEnvelope[current.index] = current.amplitude;
+
       //sort bpList[] by index
       sortBP(bpList, j + 1);
 
